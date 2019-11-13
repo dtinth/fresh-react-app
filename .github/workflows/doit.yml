@@ -15,6 +15,10 @@ jobs:
     - name: Some git wizardry
       run: |
         cd fresh-react-app
+        git init
+        export GIT_COMMITTER_NAME=Janitor
+        export GIT_AUTHOR_NAME=Janitor
+        export EMAIL=repository-janitor[bot]@users.noreply.github.com
         git remote set-url origin "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY.git"
         git fetch origin
         git reset --soft origin/typescript || echo "No existing branch"
