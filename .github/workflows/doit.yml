@@ -6,13 +6,30 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        variant:
+          - javascript
+          - typescript
     steps:
     - uses: actions/checkout@v1
     - uses: actions/setup-node@v1
       with:
         node-version: 12.x
-    - run: yarn create react-app fresh-react-app --typescript
-    - name: Some git wizardry
+    - name: Create React App
+      run: |
+        case "${{ matrix.variant }}" in
+        typescript)
+          yarn create react-app fresh-react-app --typescript
+          ;;
+        javascript)
+          yarn create react-app fresh-react-app
+          ;;
+        *)
+          echo "Hey! Why don't you just get up and dance man?"
+          ;;
+        esac
+    - name: Some Git wizardry
       run: |
         cd fresh-react-app
         git init
@@ -21,6 +38,6 @@ jobs:
         export EMAIL=repository-janitor[bot]@users.noreply.github.com
         git remote add origin "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY.git"
         git fetch origin
-        git reset --soft origin/typescript || echo "No existing branch"
+        git reset --soft origin/${{ matrix.variant }} || echo "No existing branch"
         git add --all && git commit -m "Update $(node -p 'new Date().toJSON()')" || echo "Nothing to commit"
-        git push origin HEAD:refs/heads/typescript
+        git push origin HEAD:refs/heads/${{ matrix.variant }}
