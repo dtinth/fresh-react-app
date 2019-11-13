@@ -1,7 +1,7 @@
 name: Update the repository
 on:
   schedule:
-    - cron: '19 0 * * *'
+    - cron: '30 19 * * *'
 jobs:
   build:
     runs-on: ubuntu-latest
