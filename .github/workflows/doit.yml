@@ -1,7 +1,7 @@
-name: Generate a fresh branch
+name: Update the repository
 on:
   schedule:
-    - cron: '15 9 * * *'
+    - cron: '19 0 * * *'
 jobs:
   build:
     runs-on: ubuntu-latest
